@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "target": "ESNEXT",
+    "module": "esnext",
+    "moduleResolution": "classic",
+    // Emit additional JavaScript to ease support for importing CommonJS modules. This enables `allowSyntheticDefaultImports` for type compatibility.
+    "esModuleInterop": true,
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    },
+    // Specify what JSX code is generated.
+    "jsx": "react-jsx"
+  },
+  "include": ["./src/**/*"]
+}
