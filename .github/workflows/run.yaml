@@ -23,4 +23,4 @@ jobs:
           deno-version: v1.x
 
       - name: Run
-        run: make runx
+        run:  PUPPETEER_PRODUCT=chrome deno run -A --importmap=import_map.json --unstable https://deno.land/x/puppeteer@16.2.0/install.ts src/cmd/main.ts -v 
