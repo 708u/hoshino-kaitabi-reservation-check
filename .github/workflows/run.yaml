@@ -4,6 +4,12 @@ on:
   schedule:
     - cron: '30 6-22 * * *'
   workflow_dispatch:
+    inputs:
+      sendNotification:
+        type: boolean
+        required: false
+        default: true
+        description: 'send notification enabled'
 
 permissions:
   contents: read
@@ -15,6 +21,8 @@ jobs:
       DENO_DIR: /home/runner/.cache/deno
       PUPPETEER_PRODUCT: chrome
       HOSHINO_KAITABI_RESERVATION_SLACK_WEBHOOK_URL: ${{ secrets.HOSHINO_KAITABI_RESERVATION_SLACK_WEBHOOK_URL }}
+    outputs:
+      sendNotification: ${{ steps.api.outputs.sendNotification }}
 
     steps:
       - name: Setup repo
@@ -35,5 +43,9 @@ jobs:
       - name: install chrome
         run:  deno run -A --unstable https://deno.land/x/puppeteer@16.2.0/install.ts
 
+      - name: set slack notification enabled
+        if: github.event.inputs.sendNotification
+        run: echo "{sendNotification}={--send-notification}" >> $GITHUB_OUTPUT
+
       - name: run
-        run: deno run -A --importmap=import_map.json src/cmd/main.ts -v -o out/ --send-notification
+        run: deno run -A --importmap=import_map.json src/cmd/main.ts -v -o out/ ${{ steps.api.outputs.sendNotification }}
