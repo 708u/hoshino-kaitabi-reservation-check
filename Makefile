@@ -5,3 +5,7 @@ build:
 PHONY: run
 run:
 	deno run -A --importmap=import_map.json src/cmd/main.ts -v -o out/
+
+PHONY: runx
+runx:
+	PUPPETEER_PRODUCT=chrome deno run -A --importmap=import_map.json src/cmd/main.ts -v -o out/
