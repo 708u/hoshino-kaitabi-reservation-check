@@ -44,7 +44,7 @@ import puppeteer from "https://deno.land/x/puppeteer@16.2.0/mod.ts";
       screenshotName = `${screenshotName}_reserved`;
     } catch (_) {
       // catch error means reservation is available because reserved dialog is not appeared.
-      console.log(cyan(`Now ${kaiInfo.name} is available! ${kaiInfo.url}`));
+      console.log(cyan(`${kaiInfo.name} is available! url: ${kaiInfo.url}`));
       screenshotName = `${screenshotName}_ok`;
     }
 
