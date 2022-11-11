@@ -15,7 +15,6 @@ jobs:
     env:
       DENO_DIR: /home/runner/.cache/deno
       PUPPETEER_PRODUCT: chrome
-      HOSHINO_KAITABI_RESERVATION_SLACK_WEBHOOK_URL: ${{ secrets.HOSHINO_KAITABI_RESERVATION_SLACK_WEBHOOK_URL }}
 
     steps:
       - name: Setup repo
@@ -38,4 +37,6 @@ jobs:
         run:  deno run -A --unstable https://deno.land/x/puppeteer@16.2.0/install.ts
 
       - name: run
+        env:
+          HOSHINO_KAITABI_RESERVATION_SLACK_WEBHOOK_URL: ${{ secrets.HOSHINO_KAITABI_RESERVATION_SLACK_WEBHOOK_URL }}
         run: make run
