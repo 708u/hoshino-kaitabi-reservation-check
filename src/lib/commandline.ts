@@ -5,6 +5,7 @@ type Option = {
   verbose: boolean;
   outDirBase: string;
   targetReservations: string[];
+  sendNotificationEnabled: boolean;
 };
 
 export const parseArgs = (args: ReturnType<typeof parse>): Option => {
@@ -12,5 +13,6 @@ export const parseArgs = (args: ReturnType<typeof parse>): Option => {
     verbose: !!args?.v || !!args?.verbose,
     outDirBase: args?.o ? resolve(args?.o) : "./out",
     targetReservations: args["_"].map((v) => String(v)),
+    sendNotificationEnabled: !!args?.["send-notification"],
   };
 };

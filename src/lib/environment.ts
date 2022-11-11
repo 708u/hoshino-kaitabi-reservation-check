@@ -1,0 +1,2 @@
+export const SLACK_WEBHOOK_URL =
+  Deno.env.get("HOSHINO_KAITABI_RESERVATION_SLACK_WEBHOOK_URL") ?? "";

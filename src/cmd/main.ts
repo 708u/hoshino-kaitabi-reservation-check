@@ -1,4 +1,5 @@
 import { parseArgs } from "@/lib/commandline.ts";
+import { SLACK_WEBHOOK_URL } from "@/lib/environment.ts";
 import { kaiTabiUrls } from "@/lib/kai.ts";
 import { format } from "https://deno.land/std@0.163.0/datetime/mod.ts";
 import { parse } from "https://deno.land/std@0.163.0/flags/mod.ts";
@@ -18,6 +19,7 @@ import puppeteer from "https://deno.land/x/puppeteer@16.2.0/mod.ts";
   );
   ensureDir(outDir);
 
+  const reservableKais: string[] = [];
   const browser = await puppeteer.launch();
   for (const key in kaiTabiUrls) {
     if (
@@ -44,8 +46,10 @@ import puppeteer from "https://deno.land/x/puppeteer@16.2.0/mod.ts";
       screenshotName = `${screenshotName}_reserved`;
     } catch (_) {
       // catch error means reservation is available because reserved dialog is not appeared.
-      console.log(cyan(`${kaiInfo.name} is available! url: ${kaiInfo.url}`));
+      const msg = `${kaiInfo.name} is available! url: ${kaiInfo.url}`;
+      console.log(cyan(msg));
       screenshotName = `${screenshotName}_ok`;
+      reservableKais.push(msg);
     }
 
     await page.screenshot({
@@ -55,5 +59,17 @@ import puppeteer from "https://deno.land/x/puppeteer@16.2.0/mod.ts";
   }
 
   await browser.close();
+
+  if (option.sendNotificationEnabled) {
+    try {
+      await fetch(SLACK_WEBHOOK_URL, {
+        method: "POST",
+        body: JSON.stringify({ text: reservableKais.join("\n") }),
+      });
+    } catch (e) {
+      throw new Error(e);
+    }
+  }
+
   console.log("done.");
 })();

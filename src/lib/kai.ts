@@ -1,4 +1,10 @@
-export const kaiTabiUrls: Record<string, { name: string; url: string }> = {
+type KaiInfo = {
+  name: string;
+  url: string;
+  shouldNotify?: boolean;
+};
+
+export const kaiTabiUrls: Record<string, KaiInfo> = {
   tugal: {
     name: "界 津軽",
     url: "https://hoshinoresorts.com/plans/JA/0000000114/0000000431",
