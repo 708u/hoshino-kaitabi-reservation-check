@@ -22,5 +22,8 @@ jobs:
         with:
           deno-version: v1.x
 
-      - name: Run
-        run:  PUPPETEER_PRODUCT=chrome deno run -A --importmap=import_map.json --unstable https://deno.land/x/puppeteer@16.2.0/install.ts src/cmd/main.ts -v 
+      - name: compile
+        run:  PUPPETEER_PRODUCT=chrome deno compile -A --importmap=import_map.json --unstable https://deno.land/x/puppeteer@16.2.0/install.ts -o out/hoshino-kaitabi-reservation src/cmd/main.ts
+        
+      - name: run
+        run: 
