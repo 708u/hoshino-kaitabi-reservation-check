@@ -49,11 +49,9 @@ jobs:
 
       - name: run
         run: |
-          echo ${{ github.event.inputs.sendNotification }}
-          echo "foo"
           sendNotification=''
           if [ ${{ github.event.inputs.sendNotification }} = "true" ]; then
             sendNotification='--send-notification'
           fi
 
-          deno run -A --importmap=import_map.json src/cmd/main.ts -v -o out/ ${{ steps.api.outputs.sendNotification }}
+          deno run -A --importmap=import_map.json src/cmd/main.ts -v -o out/ $sendNotification
