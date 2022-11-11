@@ -50,7 +50,7 @@ jobs:
       - name: run
         run: |
           sendNotification=''
-          if "${{ github.event.inputs.sendNotification }}"; then
+          if ${{ github.event.inputs.sendNotification }}; then
             sendNotification='--send-notification'
           fi
 
