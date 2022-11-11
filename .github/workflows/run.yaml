@@ -21,8 +21,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Setup Deno
-        # uses: denoland/setup-deno@v1
-        uses: denoland/setup-deno@9db7f66e8e16b5699a514448ce994936c63f0d54
+        uses: denoland/setup-deno@v1
         with:
           deno-version: v1.x
 
@@ -37,6 +36,6 @@ jobs:
         run:  deno run -A --unstable https://deno.land/x/puppeteer@16.2.0/install.ts
 
       - name: run
+        run: deno run -A --importmap=import_map.json src/cmd/main.ts -v -o out/ --send-notification
         env:
           HOSHINO_KAITABI_RESERVATION_SLACK_WEBHOOK_URL: ${{ secrets.HOSHINO_KAITABI_RESERVATION_SLACK_WEBHOOK_URL }}
-        run: make run
