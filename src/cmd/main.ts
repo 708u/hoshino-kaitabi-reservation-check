@@ -12,6 +12,14 @@ import puppeteer from "https://deno.land/x/puppeteer@16.2.0/mod.ts";
   console.log("start");
   const option = parseArgs(parse(Deno.args));
 
+  if (option.sendNotificationEnabled) {
+    if (SLACK_WEBHOOK_URL === "") {
+      throw new Error(
+        "$HOSHINO_KAITABI_RESERVATION_SLACK_WEBHOOK_URL must be set if --send-notification enabled"
+      );
+    }
+  }
+
   const outDir = join(
     option.outDirBase,
     "screenshot",
