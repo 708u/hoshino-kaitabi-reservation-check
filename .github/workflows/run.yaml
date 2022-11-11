@@ -12,6 +12,10 @@ jobs:
   run:
     runs-on: ubuntu-latest
 
+    env:
+      DENO_DIR: /home/runner/.cache/deno
+      PUPPETEER_PRODUCT: chrome
+
     steps:
       - name: Setup repo
         uses: actions/checkout@v3
@@ -21,12 +25,16 @@ jobs:
         uses: denoland/setup-deno@9db7f66e8e16b5699a514448ce994936c63f0d54
         with:
           deno-version: v1.x
-      
-      - name: info
-        run: deno info
+
+      - name: Cache Deno dependencies
+        uses: actions/cache@v2
+        with:
+          path: ${{ env.DENO_DIR }}
+          key: ${{ runner.os }}-deno-${{ hashFiles('**/*') }}-v1
+          restore-keys: ${{ runner.os }}-deno-
 
       - name: install chrome
-        run:  PUPPETEER_PRODUCT=chrome deno run -A --unstable https://deno.land/x/puppeteer@16.2.0/install.ts
+        run:  deno run -A --unstable https://deno.land/x/puppeteer@16.2.0/install.ts
 
       - name: run
         run: make run
