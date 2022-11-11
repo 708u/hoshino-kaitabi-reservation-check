@@ -11,7 +11,6 @@ permissions:
 jobs:
   run:
     runs-on: ubuntu-latest
-    environment: production
     env:
       DENO_DIR: /home/runner/.cache/deno
       PUPPETEER_PRODUCT: chrome
@@ -31,6 +30,9 @@ jobs:
           path: ${{ env.DENO_DIR }}
           key: ${{ runner.os }}-deno-${{ hashFiles('**/*') }}-v1
           restore-keys: ${{ runner.os }}-deno-
+
+      - name: echo
+        run: echo ${{ secrets.HOSHINO_KAITABI_RESERVATION_SLACK_WEBHOOK_URL }}
 
       - name: install chrome
         run:  deno run -A --unstable https://deno.land/x/puppeteer@16.2.0/install.ts
