@@ -15,6 +15,7 @@ jobs:
     env:
       DENO_DIR: /home/runner/.cache/deno
       PUPPETEER_PRODUCT: chrome
+      HOSHINO_KAITABI_RESERVATION_SLACK_WEBHOOK_URL: ${{ secrets.HOSHINO_KAITABI_RESERVATION_SLACK_WEBHOOK_URL }}
 
     steps:
       - name: Setup repo
