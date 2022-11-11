@@ -1,6 +1,6 @@
 import { parseArgs } from "@/lib/commandline.ts";
-import { SLACK_WEBHOOK_URL } from "@/lib/environment.ts";
 import { kaiTabiUrls } from "@/lib/kai.ts";
+import { noticeMessage } from "@/lib/slack.ts";
 import { format } from "https://deno.land/std@0.163.0/datetime/mod.ts";
 import { parse } from "https://deno.land/std@0.163.0/flags/mod.ts";
 import { cyan, gray } from "https://deno.land/std@0.163.0/fmt/colors.ts";
@@ -11,15 +11,6 @@ import puppeteer from "https://deno.land/x/puppeteer@16.2.0/mod.ts";
 (async () => {
   console.log("start");
   const option = parseArgs(parse(Deno.args));
-
-  if (option.sendNotificationEnabled) {
-    if (SLACK_WEBHOOK_URL === "") {
-      console.log(SLACK_WEBHOOK_URL);
-      throw new Error(
-        "$HOSHINO_KAITABI_RESERVATION_SLACK_WEBHOOK_URL must be set if --send-notification enabled"
-      );
-    }
-  }
 
   const outDir = join(
     option.outDirBase,
@@ -70,13 +61,9 @@ import puppeteer from "https://deno.land/x/puppeteer@16.2.0/mod.ts";
   await browser.close();
 
   if (option.sendNotificationEnabled) {
-    try {
-      await fetch(SLACK_WEBHOOK_URL, {
-        method: "POST",
-        body: JSON.stringify({ text: reservableKais.join("\n") }),
-      });
-    } catch (e) {
-      throw new Error(e);
+    if (reservableKais.length > 0) {
+      console.log("send result to slack");
+      noticeMessage(JSON.stringify({ text: reservableKais.join("\n") }));
     }
   }
 
