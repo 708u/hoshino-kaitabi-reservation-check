@@ -63,7 +63,7 @@ import puppeteer from "https://deno.land/x/puppeteer@16.2.0/mod.ts";
   if (option.sendNotificationEnabled) {
     if (reservableKais.length > 0) {
       console.log("send result to slack");
-      noticeMessage(JSON.stringify({ text: reservableKais.join("\n") }));
+      noticeMessage(reservableKais.join("\n"));
     }
   }
 
