@@ -47,11 +47,10 @@ jobs:
         if: github.event.inputs.sendNotification
         run: echo "{sendNotification}={--send-notification}" >> $GITHUB_OUTPUT
 
-      - name: echo
-        run: echo ${{ steps.api.outputs }}
       - name: run
         run: |
           echo ${{ github.event.inputs.sendNotification }}
+          echo "foo"
           sendNotification=''
           if [ ${{ github.event.inputs.sendNotification }} = "true" ]; then
             sendNotification='--send-notification'
