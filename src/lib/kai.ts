@@ -1,7 +1,6 @@
 type KaiInfo = {
   name: string;
   url: string;
-  shouldNotify?: boolean;
 };
 
 export const kaiTabiUrls: Record<string, KaiInfo> = {
