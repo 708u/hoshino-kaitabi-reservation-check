@@ -15,7 +15,7 @@ on:
         type: string
         required: false
         default: 'sengokubaru'
-        description: 'reservation check target. enter with a space delimiter. e.g. foo bar'
+        description: 'reservation check target. enter with a space delimiter. e.g. foo bar if empty value is entered, check all kais reservation'
 
 permissions:
   contents: read
