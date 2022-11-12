@@ -1,6 +1,6 @@
 import { parseArgs } from "@/lib/commandline.ts";
 import { kaiTabiUrls } from "@/lib/kai.ts";
-import { noticeMessage } from "@/lib/slack.ts";
+import { sendMessage } from "@/lib/slack.ts";
 import { format } from "https://deno.land/std@0.163.0/datetime/mod.ts";
 import { parse } from "https://deno.land/std@0.163.0/flags/mod.ts";
 import { cyan, gray } from "https://deno.land/std@0.163.0/fmt/colors.ts";
@@ -52,11 +52,9 @@ import puppeteer from "https://deno.land/x/puppeteer@16.2.0/mod.ts";
 
   await browser.close();
 
-  if (option.sendNotificationEnabled) {
-    if (reservableKaiMessages.length > 0) {
-      console.log("send result to slack");
-      noticeMessage(reservableKaiMessages.join("\n"));
-    }
+  if (option.sendNotificationEnabled && reservableKaiMessages.length > 0) {
+    console.log("send result to slack");
+    sendMessage(reservableKaiMessages.join("\n"));
   }
 
   console.log("done.");

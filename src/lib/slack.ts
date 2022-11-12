@@ -1,6 +1,6 @@
 import { SLACK_WEBHOOK_URL } from "@/lib/environment.ts";
 
-export const noticeMessage = async (text: string): Promise<void> => {
+export const sendMessage = async (text: string): Promise<void> => {
   try {
     await fetch(SLACK_WEBHOOK_URL, {
       method: "POST",
