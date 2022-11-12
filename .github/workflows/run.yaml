@@ -15,7 +15,7 @@ on:
         type: string
         required: true
         default: 'sengokubaru'
-        description: 'reservation check target. enter with a space delimiter. e.g. foo bar. if you want to check all reservation, please enter `all` or empty value'
+        description: 'reservation check target. enter with a space delimiter. e.g. foo bar. if you want to check all reservation, please enter `all`'
 
 permissions:
   contents: read
