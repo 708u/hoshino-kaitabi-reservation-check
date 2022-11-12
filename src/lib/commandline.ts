@@ -13,7 +13,7 @@ export const parseArgs = (args: ReturnType<typeof parse>): Option => {
   const option = {
     verbose: !!args?.v || !!args?.verbose,
     outDirBase: args?.o ? resolve(args?.o) : "./out",
-    targetReservations: args["_"].map((v) => String(v)),
+    targetReservations: args["_"].filter((v) => v !== "").map((v) => String(v)),
     sendNotificationEnabled: !!args?.["send-notification"],
   };
 
