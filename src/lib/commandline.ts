@@ -36,8 +36,8 @@ const parseTargetReservations = (targets: Array<string>): Array<Kai> => {
     return Object.keys(kaiTabiUrls) as Array<Kai>;
 
   return targets
-    .map<Kai | undefined>((target) => {
-      if (isKai(target)) return target;
+    .map<Kai | undefined>((v) => {
+      if (isKai(v)) return v;
     })
-    .filter((v): v is Kai => v !== undefined);
+    .filter((v): v is Kai => !!v);
 };
