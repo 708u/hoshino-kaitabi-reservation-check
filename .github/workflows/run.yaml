@@ -8,14 +8,14 @@ on:
     inputs:
       sendNotification:
         type: boolean
-        required: false
+        required: true
         default: true
         description: 'send notification enabled'
       reservationCheckTarget:
         type: string
-        required: false
+        required: true
         default: 'sengokubaru'
-        description: 'reservation check target. enter with a space delimiter. e.g. foo bar. if empty value is entered, check all kais reservation.'
+        description: 'reservation check target. enter with a space delimiter. e.g. foo bar. if you want to check all reservation, please enter `all` or empty value'
 
 permissions:
   contents: read
