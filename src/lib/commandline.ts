@@ -1,11 +1,12 @@
 import { SLACK_WEBHOOK_URL } from "@/lib/environment.ts";
+import { isKai, Kai, kaiTabiUrls } from "@/lib/kai.ts";
 import { resolve } from "https://deno.land/std@0.162.0/path/mod.ts";
 import { parse } from "https://deno.land/std@0.163.0/flags/mod.ts";
 
 type Option = {
   verbose: boolean;
   outDirBase: string;
-  targetReservations: string[];
+  targetReservations: Array<Kai>;
   sendNotificationEnabled: boolean;
 };
 
@@ -13,8 +14,10 @@ export const parseArgs = (args: ReturnType<typeof parse>): Option => {
   const option = {
     verbose: !!args?.v || !!args?.verbose,
     outDirBase: args?.o ? resolve(args?.o) : "./out",
-    targetReservations: args["_"].filter((v) => v !== "").map((v) => String(v)),
     sendNotificationEnabled: !!args?.["send-notification"],
+    targetReservations: parseTargetReservations(
+      args["_"].map((v) => String(v))
+    ),
   };
 
   if (option.sendNotificationEnabled) {
@@ -26,4 +29,15 @@ export const parseArgs = (args: ReturnType<typeof parse>): Option => {
   }
 
   return option;
+};
+
+const parseTargetReservations = (targets: Array<string>): Array<Kai> => {
+  if (targets.includes("all") || targets.length === 0)
+    return Object.keys(kaiTabiUrls) as Array<Kai>;
+
+  return targets
+    .map<Kai | undefined>((target) => {
+      if (isKai(target)) return target;
+    })
+    .filter((v): v is Kai => v !== undefined);
 };

@@ -1,9 +1,4 @@
-type KaiInfo = {
-  name: string;
-  url: string;
-};
-
-export const kaiTabiUrls: Record<string, KaiInfo> = {
+export const kaiTabiUrls = {
   tugal: {
     name: "界 津軽",
     url: "https://hoshinoresorts.com/plans/JA/0000000114/0000000431",
@@ -72,4 +67,10 @@ export const kaiTabiUrls: Record<string, KaiInfo> = {
     name: "界 霧島",
     url: "https://hoshinoresorts.com/plans/JA/0000000127/0000000027",
   },
+} as const;
+
+export const isKai = (target: unknown): target is Kai => {
+  return typeof target === "string" && target in kaiTabiUrls;
 };
+
+export type Kai = keyof typeof kaiTabiUrls;
