@@ -20,12 +20,10 @@ export const parseArgs = (args: ReturnType<typeof parse>): Option => {
     ),
   };
 
-  if (option.sendNotificationEnabled) {
-    if (SLACK_WEBHOOK_URL === "") {
-      throw new Error(
-        "$HOSHINO_KAITABI_RESERVATION_SLACK_WEBHOOK_URL must be set if --send-notification enabled"
-      );
-    }
+  if (option.sendNotificationEnabled && SLACK_WEBHOOK_URL === "") {
+    throw new Error(
+      "$HOSHINO_KAITABI_RESERVATION_SLACK_WEBHOOK_URL must be set if --send-notification enabled"
+    );
   }
 
   return option;
