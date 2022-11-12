@@ -14,7 +14,7 @@ on:
       reservationCheckTarget:
         type: string
         required: true
-        default: 'sengokubaru'
+        default: 'all'
         description: 'reservation check target. enter with a space delimiter. e.g. foo bar. if you want to check all reservation, please enter `all`'
 
 permissions:
@@ -49,8 +49,8 @@ jobs:
 
       - name: run
         run: |
-          if ${{ github.event.inputs.sendNotification }}; then
+          if ${{ github.event.inputs.sendNotification && true }}; then
             sendNotification='--send-notification'
           fi
 
-          deno run -A --importmap=import_map.json src/cmd/main.ts ${sendNotification} -v -o out/ ${{ github.event.inputs.reservationCheckTarget }}
+          deno run -A --importmap=import_map.json src/cmd/main.ts ${sendNotification} -v -o out/ ${{ github.event.inputs.reservationCheckTarget || 'sengokubaru' }}
