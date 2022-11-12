@@ -49,6 +49,8 @@ jobs:
 
       - name: run
         run: |
+          # if workflow is running on schedule, input value is not set.
+          # https://stackoverflow.com/questions/72539900/schedule-trigger-github-action-workflow-with-input-parameters
           if ${{ github.event.inputs.sendNotification || true }}; then
             sendNotification='--send-notification'
           fi
