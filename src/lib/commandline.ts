@@ -3,7 +3,7 @@ import { isKai, Kai, kaiTabiUrls } from "@/lib/kai.ts";
 import { resolve } from "https://deno.land/std@0.162.0/path/mod.ts";
 import { parse } from "https://deno.land/std@0.163.0/flags/mod.ts";
 
-type Option = {
+export type Option = {
   verbose: boolean;
   outDirBase: string;
   targetReservations: Array<Kai>;
