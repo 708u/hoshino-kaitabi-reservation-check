@@ -47,7 +47,7 @@ jobs:
       - name: install chrome
         run:  deno run -A --unstable https://deno.land/x/puppeteer@16.2.0/install.ts
 
-      - name: run
+      - name: Run
         run: |
           # if workflow is running on schedule, input value is not set.
           # https://stackoverflow.com/questions/72539900/schedule-trigger-github-action-workflow-with-input-parameters
@@ -56,3 +56,9 @@ jobs:
           fi
 
           deno run -A --importmap=import_map.json src/cmd/main.ts ${sendNotification} -v -o out/ ${{ github.event.inputs.reservationCheckTarget || 'sengokubaru' }}
+
+      - name: Archive artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: screenshots
+          path: out
