@@ -52,7 +52,7 @@ export const crawlReservableKaiExists = async (
         // Reservations are possible when a triangle is displayed for each day of the calendar.
         const triangle = await cell.$(".triangle");
         if (triangle) {
-          const dateSelector = await cell.$<string>(".date");
+          const dateSelector = await cell.$(".date");
           const dateText = await dateSelector?.getProperty("textContent");
           // TODO: dirty fix
           const date = (await dateText?.jsonValue()) as string;
