@@ -37,21 +37,42 @@ export const crawlReservableKaiExists = async (
       // Do nothing because catch error means reservation is available.
     }
     const calenders = await page.$$(".c-calendar");
-    let reservableCounts = 0;
+    const reservableDates: Array<string> = [];
     for (const calender of calenders) {
-      const triangles = await calender.$$(
-        ".content > div > .calender-cell > .triangle"
+      const header = await calender.$(".header");
+      const targetYearMonthSelector = await header?.getProperty("textContent");
+      // TODO: dirty fix
+      const targetYearMonth =
+        (await targetYearMonthSelector?.jsonValue()) as string;
+
+      const calenderCells = await calender.$$(
+        ".content > div > .calender-cell"
       );
-      reservableCounts += triangles.length;
+      for (const cell of calenderCells) {
+        // Reservations are possible when a triangle is displayed for each day of the calendar.
+        const triangle = await cell.$(".triangle");
+        if (triangle) {
+          const dateSelector = await cell.$<string>(".date");
+          const dateText = await dateSelector?.getProperty("textContent");
+          // TODO: dirty fix
+          const date = (await dateText?.jsonValue()) as string;
+          const reservableDate = `${targetYearMonth.trim()}${date.trim()}日`;
+          reservableDates.push(reservableDate);
+        }
+      }
     }
 
-    if (reservableCounts === 0 && option.verbose) {
+    if (reservableDates.length === 0 && option.verbose) {
       console.log(gray(`${kaiInfo.name} is not available...`));
       await finishCrawl(page, `${key}_reserved`);
       return "";
     }
 
-    const msg = `${kaiInfo.name} is available! reservable counts: ${reservableCounts} url: ${kaiInfo.url}`;
+    const msg = `${
+      kaiInfo.name
+    } is available! reservable dates: ${reservableDates.join(", ")}. url: ${
+      kaiInfo.url
+    }`;
     console.log(cyan(msg));
     await page.screenshot({
       path: join(outDir, `${key}.png`),
