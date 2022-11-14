@@ -62,3 +62,4 @@ jobs:
         with:
           name: screenshots
           path: out
+          retention-days: 3

@@ -70,7 +70,7 @@ export const crawlReservableKaiExists = async (
 
     const msg = `${
       kaiInfo.name
-    } is available! reservable dates: ${reservableDates.join(", ")}. url: ${
+    } is available! reservable dates: ${reservableDates.join(", ")}, url: ${
       kaiInfo.url
     }`;
     console.log(cyan(msg));
