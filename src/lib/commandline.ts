@@ -8,6 +8,7 @@ export type Option = {
   outDirBase: string;
   targetReservations: Array<Kai>;
   sendNotificationEnabled: boolean;
+  screenshotEnabled: boolean;
 };
 
 export const parseArgs = (args: ReturnType<typeof parse>): Option => {
@@ -15,6 +16,7 @@ export const parseArgs = (args: ReturnType<typeof parse>): Option => {
     verbose: !!args?.v || !!args?.verbose,
     outDirBase: args?.o ? resolve(args?.o) : "./out",
     sendNotificationEnabled: !!args?.["send-notification"],
+    screenshotEnabled: !args?.["no-screenshot"],
     targetReservations: parseTargetReservations(
       args["_"].map((v) => String(v))
     ),

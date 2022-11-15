@@ -4,4 +4,4 @@ build:
 
 PHONY: run
 run:
-	deno run -A --importmap=import_map.json src/cmd/main.ts -v -o out/
+	deno run -A --importmap=import_map.json src/cmd/main.ts -v --no-screenshot -o out

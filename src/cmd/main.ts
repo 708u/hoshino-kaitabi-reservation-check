@@ -13,7 +13,8 @@ import { join } from "https://deno.land/std@0.163.0/path/mod.ts";
     "screenshot",
     format(new Date(), "yyyyMMddHHmmss")
   );
-  ensureDir(outDir);
+
+  if (option.screenshotEnabled) ensureDir(outDir);
 
   await crawlReservableKaiExists(option, outDir);
 

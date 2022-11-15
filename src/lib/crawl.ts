@@ -10,10 +10,17 @@ export const crawlReservableKaiExists = async (
   outDir: string
 ): Promise<void> => {
   const browser = await puppeteer.launch();
-  const finishCrawl = async (page: Page, filename: string): Promise<void> => {
-    await page.screenshot({
-      path: join(outDir, `${filename}.png`),
-    });
+  // TODO: Separate a screenshot taking
+  const finishCrawl = async (
+    page: Page,
+    filename: string,
+    screenshotEnabled?: boolean
+  ): Promise<void> => {
+    if (screenshotEnabled) {
+      await page.screenshot({
+        path: join(outDir, `${filename}.png`),
+      });
+    }
     await page.close();
   };
 
@@ -31,7 +38,7 @@ export const crawlReservableKaiExists = async (
       if (option.verbose) {
         console.log(gray(`${kaiInfo.name} is not available...`));
       }
-      await finishCrawl(page, `${key}_reserved`);
+      await finishCrawl(page, `${key}_reserved`, option.screenshotEnabled);
       return "";
     } catch (_) {
       // Do nothing because catch error means reservation is available.
@@ -64,20 +71,17 @@ export const crawlReservableKaiExists = async (
 
     if (reservableDates.length === 0 && option.verbose) {
       console.log(gray(`${kaiInfo.name} is not available...`));
-      await finishCrawl(page, `${key}_reserved`);
+      await finishCrawl(page, `${key}_reserved`, option.screenshotEnabled);
       return "";
     }
 
     const msg = `${
       kaiInfo.name
-    } is available! reservable dates: ${reservableDates.join(", ")}, url: ${
+    } is available! reservable dates: ${reservableDates.join(", ")} url: ${
       kaiInfo.url
     }`;
     console.log(cyan(msg));
-    await page.screenshot({
-      path: join(outDir, `${key}.png`),
-    });
-    await page.close();
+    await finishCrawl(page, `${key}_ok`, option.screenshotEnabled);
     return msg;
   };
 
