@@ -5,19 +5,17 @@ import { parse } from "https://deno.land/std@0.163.0/flags/mod.ts";
 import { ensureDir } from "https://deno.land/std@0.163.0/fs/mod.ts";
 import { join } from "https://deno.land/std@0.163.0/path/mod.ts";
 
-(async () => {
-  console.log("start");
-  const option = parseArgs(parse(Deno.args));
-  const outDir = join(
-    option.outDirBase,
-    "screenshot",
-    format(new Date(), "yyyyMMddHHmmss")
-  );
+console.log("start");
+const option = parseArgs(parse(Deno.args));
+const outDir = join(
+  option.outDirBase,
+  "screenshot",
+  format(new Date(), "yyyyMMddHHmmss")
+);
 
-  if (option.screenshotEnabled) ensureDir(outDir);
+if (option.screenshotEnabled) ensureDir(outDir);
 
-  await crawlReservableKaiExists(option, outDir);
+await crawlReservableKaiExists(option, outDir);
 
-  console.log("done.");
-  Deno.exit();
-})();
+console.log("done.");
+Deno.exit();
