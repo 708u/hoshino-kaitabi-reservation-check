@@ -1,65 +1,65 @@
-name: Run
+# name: Run
 
-on:
-  schedule:
-    # JST Every 30 minutes between 6:00 and 23:00
-    - cron: '0,30 0-14,21-23 * * *'
-  workflow_dispatch:
-    inputs:
-      sendNotification:
-        type: boolean
-        required: true
-        default: true
-        description: 'send notification enabled'
-      reservationCheckTarget:
-        type: string
-        required: true
-        default: 'all'
-        description: 'reservation check target. enter with a space delimiter. e.g. foo bar. if you want to check all reservation, please enter `all`'
+# on:
+#   schedule:
+#     # JST Every 30 minutes between 6:00 and 23:00
+#     - cron: '0,30 0-14,21-23 * * *'
+#   workflow_dispatch:
+#     inputs:
+#       sendNotification:
+#         type: boolean
+#         required: true
+#         default: true
+#         description: 'send notification enabled'
+#       reservationCheckTarget:
+#         type: string
+#         required: true
+#         default: 'all'
+#         description: 'reservation check target. enter with a space delimiter. e.g. foo bar. if you want to check all reservation, please enter `all`'
 
-permissions:
-  contents: read
+# permissions:
+#   contents: read
 
-jobs:
-  run:
-    runs-on: ubuntu-latest
-    env:
-      DENO_DIR: /home/runner/.cache/deno
-      PUPPETEER_PRODUCT: chrome
-      HOSHINO_KAITABI_RESERVATION_SLACK_WEBHOOK_URL: ${{ secrets.HOSHINO_KAITABI_RESERVATION_SLACK_WEBHOOK_URL }}
+# jobs:
+#   run:
+#     runs-on: ubuntu-latest
+#     env:
+#       DENO_DIR: /home/runner/.cache/deno
+#       PUPPETEER_PRODUCT: chrome
+#       HOSHINO_KAITABI_RESERVATION_SLACK_WEBHOOK_URL: ${{ secrets.HOSHINO_KAITABI_RESERVATION_SLACK_WEBHOOK_URL }}
 
-    steps:
-      - name: Setup repo
-        uses: actions/checkout@v3
+#     steps:
+#       - name: Setup repo
+#         uses: actions/checkout@v3
 
-      - name: Setup Deno
-        uses: denoland/setup-deno@v1
-        with:
-          deno-version: v1.x
+#       - name: Setup Deno
+#         uses: denoland/setup-deno@v1
+#         with:
+#           deno-version: v1.x
 
-      - name: Cache Deno dependencies
-        uses: actions/cache@v3
-        with:
-          path: ${{ env.DENO_DIR }}
-          key: ${{ runner.os }}-deno-${{ hashFiles('**/*') }}-v1
-          restore-keys: ${{ runner.os }}-deno-
+#       - name: Cache Deno dependencies
+#         uses: actions/cache@v3
+#         with:
+#           path: ${{ env.DENO_DIR }}
+#           key: ${{ runner.os }}-deno-${{ hashFiles('**/*') }}-v1
+#           restore-keys: ${{ runner.os }}-deno-
 
-      - name: install chrome
-        run:  deno run -A --unstable https://deno.land/x/puppeteer@16.2.0/install.ts
+#       - name: install chrome
+#         run:  deno run -A --unstable https://deno.land/x/puppeteer@16.2.0/install.ts
 
-      - name: Run
-        run: |
-          # if workflow is running on schedule, input value is not set.
-          # https://stackoverflow.com/questions/72539900/schedule-trigger-github-action-workflow-with-input-parameters
-          if ${{ github.event.inputs.sendNotification || true }}; then
-            sendNotification='--send-notification'
-          fi
+#       - name: Run
+#         run: |
+#           # if workflow is running on schedule, input value is not set.
+#           # https://stackoverflow.com/questions/72539900/schedule-trigger-github-action-workflow-with-input-parameters
+#           if ${{ github.event.inputs.sendNotification || true }}; then
+#             sendNotification='--send-notification'
+#           fi
 
-          deno run -A --importmap=import_map.json src/cmd/main.ts ${sendNotification} -v -o out/ ${{ github.event.inputs.reservationCheckTarget || 'sengokubaru' }}
+#           deno run -A --importmap=import_map.json src/cmd/main.ts ${sendNotification} -v -o out/ ${{ github.event.inputs.reservationCheckTarget || 'sengokubaru' }}
 
-      - name: Archive artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: screenshots
-          path: out/screenshot
-          retention-days: 3
+#       - name: Archive artifact
+#         uses: actions/upload-artifact@v3
+#         with:
+#           name: screenshots
+#           path: out/screenshot
+#           retention-days: 3
